@@ -6,16 +6,13 @@ import numpy as np
 df = pd.read_excel('final data.xlsx', engine='openpyxl')
 
 # 定义'conv+bn_1'和'conv+bn_2'的数据
-speed = df['separate']
+speed = df['separate4']
 sum = [speed[i] + speed[i+1] for i in range(0, len(speed), 2)]
 sum = sum[::2]
 
 # 提取柱子A和柱子B的数据
-data_a = speed[::4]  # 奇数索引数据
-data_b = speed[1::4]  # 偶数索引数据
-
-print(data_a)
-print(data_b)
+data_a = speed[2::4]  # 奇数索引数据
+data_b = speed[3::4]  # 偶数索引数据
 
 # 计算所占比例
 proportion_a = [a / total * 100 for a, total in zip(data_a, sum)]
@@ -30,8 +27,8 @@ bar_width = 0.35  # 条形的宽度
 fig, ax = plt.subplots()
 
 # 堆叠柱状图
-bars_a = ax.bar(ind, proportion_a, bar_width, label='NCHW Conv', color='#1f77b4')
-bars_b = ax.bar(ind, proportion_b, bar_width, bottom=proportion_a, label='NCHW BN', color='#87CEEB')
+bars_a = ax.bar(ind, proportion_a, bar_width, label='NHWC Conv', color='#F7A500')
+bars_b = ax.bar(ind, proportion_b, bar_width, bottom=proportion_a, label='NHWC Pool', color='#FFDAB9')
 
 
 # 设置纵坐标的标签
@@ -59,7 +56,7 @@ ax.yaxis.grid(color='gray', linestyle='-', linewidth=0.5, alpha=0.5, zorder=2)
 # ax2.set_yticklabels([]) # 隐藏次坐标轴的y轴刻度标签
 
 # 显示图例
-ax.legend(prop={'weight': 'bold','size':20})
+ax.legend(prop={'weight': 'bold', 'size': 20}, loc = 'lower left')
 
 # 显示图表
 plt.show()
